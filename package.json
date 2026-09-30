@@ -1,0 +1,19 @@
+{
+  "name": "madoe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Madoe Night and Day themes for Zed, Ghostty, and VS Code",
+  "license": "Apache-2.0",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "build": "node build.ts",
+    "check": "node build.ts --check",
+    "typecheck": "tsc --noEmit",
+    "package:vscode": "node build.ts && mkdir -p dist && cd vscode && bunx @vscode/vsce package --allow-missing-repository --no-rewrite-relative-links --out ../dist/madoe-0.1.0.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^6.0.0"
+  }
+}
