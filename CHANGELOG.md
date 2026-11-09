@@ -24,6 +24,7 @@ only.
   Tokyo Night provenance of the adapted colors.
 - Unit tests for the Zed, VS Code, and Ghostty mappings (`npm test`).
 - Stryker mutation testing for the mappings (`npm run mutate`).
+- GitHub Actions CI for the tests, the checks, and the VSIX package.
 - Oxlint with type-aware rules (`npm run lint`) and Oxfmt
   (`npm run fmt`, `npm run fmt:check`).
 - The build stops when a mapping refers to a token that is not in

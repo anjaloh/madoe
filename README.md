@@ -80,6 +80,16 @@ The build stops with an error in these conditions:
 
 To release a new version, change the version in all three manifests.
 
+### Continuous integration
+
+`.github/workflows/ci.yml` runs the commands above on each push to `main` and on each pull request:
+
+- **test:** `npm test` and `npm run check` on Node 24 and Node 26.
+- **quality:** `typecheck`, `lint`, `fmt:check`, and `mutate`. The Stryker report is an artifact (`mutation-report`).
+- **package:** After the other jobs pass, it runs `npm run package:vscode`. It fails if the committed files change. The VSIX is an artifact (`madoe-vsix`).
+
+Each action is pinned to a commit SHA. Dependabot (`.github/dependabot.yml`) updates the actions and the npm packages each week.
+
 ## Build
 
 ```sh
