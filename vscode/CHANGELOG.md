@@ -29,3 +29,5 @@ only.
   (`npm run fmt`, `npm run fmt:check`).
 - The build stops when a mapping refers to a token that is not in
   `palette.json`, or when the manifest versions are different.
+- T3 Code theme (`t3code/madoe.json`, `scripts/t3code.ts`): one file with
+  Madoe Night and Madoe Day, for the T3 Code web and desktop apps.

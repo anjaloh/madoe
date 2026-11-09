@@ -50,7 +50,8 @@ agent CLI.
                          carry forward from that project beyond this notice.
 
 Modifications: Madoe's background/foreground/gutter grayscale was adapted
-for Zed, Ghostty, and VS Code UI chrome and syntax scopes, retaining most
+for Zed, Ghostty, VS Code, and T3 Code UI chrome and syntax scopes,
+retaining most
 of the original values rather than copying the Rust constants above
 byte-for-byte, since those target a different rendering surface (a
 terminal color quantizer).
@@ -113,7 +114,8 @@ personally authored the original accent palette — that credit belongs to
 Enkia's tokyo-night-vscode-theme above.
 
 Modifications: only a subset of accent hues was carried into Madoe's Zed
-syntax map, Ghostty ANSI palette, and VS Code token colors, adapted for
+syntax map, Ghostty ANSI palette, VS Code token colors, and T3 Code UI
+colors, adapted for
 contrast against Madoe's neutral background ramp rather than the original
 theme's colored (blue-tinted) backgrounds, while keeping most hues intact.
 
@@ -124,11 +126,12 @@ Summary of changes made by Madoe
 - Restructured both palettes into a single, editor-agnostic source of
   truth, palette.json, covering both a dark ("Madoe Night") and light
   ("Madoe Day") variant.
-- Generated Ghostty terminal configs and VS Code color-theme JSON from that
-  one source instead of hand-maintaining three separate formats.
+- Generated Ghostty terminal configs, VS Code color-theme JSON, and a T3
+  Code theme file from that one source instead of hand-maintaining four
+  separate formats.
 - Renamed the themes to "Madoe Night" / "Madoe Day" and re-attributed
   authorship to anjaloh, while keeping this notice so the origin of the
   underlying color choices remains traceable.
 - Adapted hex values where needed for contrast/consistency across Zed,
-  Ghostty, and VS Code, rather than mechanically re-exporting the
+  Ghostty, VS Code, and T3 Code, rather than mechanically re-exporting the
   upstream projects' original values as-is.

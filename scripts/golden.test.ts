@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { ghosttyTheme } from "./ghostty.ts";
+import { t3codeTheme } from "./t3code.ts";
 import { variant } from "./test-palette.ts";
 import { vscodeTheme } from "./vscode.ts";
 import { zedTheme } from "./zed.ts";
@@ -18,6 +19,11 @@ const variants = [
 test("zedTheme agrees with the committed Zed theme for each variant", () => {
   const expected = JSON.parse(committed("zed/themes/madoe.json")) as { themes: unknown[] };
   assert.deepEqual(plain(variants.map(({ name }) => zedTheme(variant(name)))), expected.themes);
+});
+
+test("t3codeTheme agrees with the committed T3 Code theme", () => {
+  const expected: unknown = JSON.parse(committed("t3code/madoe.json"));
+  assert.deepEqual(plain(t3codeTheme(variant("Madoe Night"), variant("Madoe Day"))), expected);
 });
 
 for (const { name, file } of variants) {

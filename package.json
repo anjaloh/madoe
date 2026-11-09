@@ -2,7 +2,7 @@
   "name": "madoe",
   "version": "0.1.0",
   "private": true,
-  "description": "Madoe Night and Day themes for Zed, Ghostty, and VS Code",
+  "description": "Madoe Night and Day themes for Zed, Ghostty, VS Code, and T3 Code",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {

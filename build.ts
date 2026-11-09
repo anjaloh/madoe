@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ghosttyTheme } from "./scripts/ghostty.ts";
 import type { Theme } from "./scripts/theme.ts";
+import { t3codeTheme } from "./scripts/t3code.ts";
 import { manifestVersions, sameVersion } from "./scripts/version.ts";
 import { vscodeTheme } from "./scripts/vscode.ts";
 import { zedTheme } from "./scripts/zed.ts";
@@ -32,6 +33,12 @@ for (const theme of palette.variants) {
   const variant = theme.appearance === "dark" ? "night" : "day";
   files.set(`vscode/themes/madoe-${variant}-color-theme.json`, json(vscodeTheme(theme)));
 }
+const appearance = (name: Theme["appearance"]): Theme => {
+  const theme = palette.variants.find((candidate) => candidate.appearance === name);
+  if (!theme) throw new Error(`palette.json has no ${name} variant`);
+  return theme;
+};
+files.set("t3code/madoe.json", json(t3codeTheme(appearance("dark"), appearance("light"))));
 // Include provenance and full licenses in each distributable editor extension.
 for (const name of ["LICENSE", "NOTICE"]) {
   const text = await readFile(join(root, name), "utf8");

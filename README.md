@@ -1,7 +1,7 @@
 # Madoe
 
-Pronounced **MAD-oh**. A personal Night/Day color theme, ported to three
-places from one JSON source: **Zed**, **Ghostty**, and **VS Code**.
+Pronounced **MAD-oh**. A personal Night/Day color theme, ported to four
+places from one JSON source: **Zed**, **Ghostty**, **VS Code**, and **T3 Code**.
 
 Local-only for now: not pushed to a remote yet, built and installed by
 hand. `palette.json` captures colors already adapted by the project author
@@ -19,6 +19,7 @@ trademark, sponsorship, or endorsement of any credited project is implied.
 | `build.ts`                       | Reads `palette.json` and deterministically (re)writes every generated file below.                                                                                                                               |
 | `scripts/zed.ts`                 | Maps `palette.json`'s named `colors`/`syntax` tokens onto Zed's own dotted UI/scope keys. Used only by `build.ts`.                                                                                              |
 | `scripts/vscode.ts`              | Maps `palette.json`'s named `colors`/`syntax` tokens onto the VS Code color-theme JSON schema. Used only by `build.ts`.                                                                                         |
+| `scripts/t3code.ts`              | Maps `palette.json`'s named `colors` tokens onto the 61 T3 Code color roles, and writes one theme file with both variants. Used only by `build.ts`.                                                             |
 | `scripts/ghostty.ts`             | Writes the Ghostty theme fragment for one variant. Used only by `build.ts`.                                                                                                                                     |
 | `scripts/theme.ts`               | Shared `Theme` type. Resolves color and syntax tokens, and stops the build when a token is not in `palette.json`.                                                                                               |
 | `scripts/version.ts`             | Reads the version of each manifest. The build stops when the versions are different.                                                                                                                            |
@@ -26,13 +27,14 @@ trademark, sponsorship, or endorsement of any credited project is implied.
 | `stryker.config.json`            | Stryker mutation testing for `scripts/`. It does not copy `tsconfig.json`, because Stryker cannot read it with TypeScript 7.                                                                                    |
 | `zed/`                           | Zed extension: `extension.toml` (hand-written) + generated `themes/madoe.json` + generated `LICENSE`/`NOTICE`.                                                                                                  |
 | `ghostty/`                       | Generated Ghostty theme fragments, `Madoe Night` and `Madoe Day`.                                                                                                                                               |
+| `t3code/`                        | Generated T3 Code theme file, `madoe.json`, with `Madoe Night` as the base and `Madoe Day` as the `light` variant.                                                                                              |
 | `vscode/`                        | VS Code extension. `package.json`/`.vscodeignore` are hand-written; `themes/*-color-theme.json` plus copies of `LICENSE`/`NOTICE`/`README.md`/`CHANGELOG.md` are generated.                                     |
 | `LICENSE`, `NOTICE`              | Project docs; `build.ts` copies both, verbatim, into `vscode/` and `zed/` so they ship inside each packaged extension.                                                                                          |
 | `CHANGELOG.md`, this `README.md` | Project docs; `build.ts` copies both into `vscode/`.                                                                                                                                                            |
 
 ### Generated files are committed on purpose
 
-`zed/themes/madoe.json`, `ghostty/Madoe Night`, `ghostty/Madoe Day`, and the
+`zed/themes/madoe.json`, `ghostty/Madoe Night`, `ghostty/Madoe Day`, `t3code/madoe.json`, and the
 generated files under `vscode/` and `zed/` (see table above) are checked
 into git, not gitignored — so this repo is directly usable (copy a file,
 install a `.vsix`) without anyone having to run the build first.
@@ -98,7 +100,7 @@ npm run check        # same as: node build.ts --check (read-only, no writes)
 ```
 
 `build.ts` rewrites `zed/themes/madoe.json`, both `ghostty/Madoe *` files,
-`vscode/themes/madoe-{night,day}-color-theme.json`, and copies
+`vscode/themes/madoe-{night,day}-color-theme.json`, `t3code/madoe.json`, and copies
 `LICENSE`/`NOTICE`/`README.md`/`CHANGELOG.md` into `vscode/` and (license
 and notice) into `zed/`. Run `npm run build` after any `palette.json`
 change, then commit the regenerated files alongside it.
@@ -183,9 +185,32 @@ Then in VS Code settings:
 (Drop `window.autoDetectColorScheme` and just set
 `workbench.colorTheme` if you don't want automatic light/dark switching.)
 
+## Install — T3 Code
+
+T3 Code shows each valid theme file in `~/.t3/userdata/themes/` as a published theme. The filename is the theme ID. T3 Code updates the theme when the file changes.
+
+1. Make the themes folder:
+
+   ```sh
+   mkdir -p ~/.t3/userdata/themes
+   ```
+
+2. Copy the file to a temporary name, then rename it. The rename makes sure that T3 Code never reads a partial file.
+
+   ```sh
+   cp t3code/madoe.json ~/.t3/userdata/themes/.madoe.json.tmp
+   mv ~/.t3/userdata/themes/.madoe.json.tmp ~/.t3/userdata/themes/madoe.json
+   ```
+
+3. In T3 Code, open **Settings → Appearance** and select **Madoe**.
+
+When the T3 Code appearance is System, Madoe shows Night in dark mode and Day in light mode.
+
+As an alternative, import `t3code/madoe.json` in **Settings → Appearance → Create theme**. An imported theme does not update when the file changes. It also has the same ID, `madoe`, so it hides the published theme. Do not use the two methods together.
+
 ## Platform differences
 
-The three platforms don't share a rendering model, so `build.ts` adapts
+The four platforms don't share a rendering model, so `build.ts` adapts
 the same colors rather than copy-pasting values:
 
 - **Zed** wants its own nested `style`/`players`/`syntax` object with
@@ -200,6 +225,7 @@ the same colors rather than copy-pasting values:
 - **VS Code** wants nested `colors`/`tokenColors` objects keyed by its own
   UI/scope names; `scripts/vscode.ts` maps `palette.json`'s named
   `colors`/`syntax` tokens onto that shape.
+- **T3 Code** has 61 fixed UI color roles and no syntax or ANSI roles. `scripts/t3code.ts` maps a `palette.json` color token to each role. One file holds both variants: Night in `colors`, Day in `variants.light`. Madoe has no token for the active search match, so that role uses the stronger highlight color. In Madoe Day, the send button does not change color on hover, because `linkTextHover` and `textAccent` are the same.
 
 ## Where the colors come from
 
