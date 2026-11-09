@@ -13,17 +13,17 @@ trademark, sponsorship, or endorsement of any credited project is implied.
 
 ## Repository layout
 
-| Path | Role |
-| --- | --- |
-| `palette.json` | The only hand-edited color source. Flat, neutral, named color tokens (`colors`, `syntax`, `players`), not any one editor's schema — one `variants` entry each for `Madoe Night` (dark) and `Madoe Day` (light). |
-| `build.ts` | Reads `palette.json` and deterministically (re)writes every generated file below. |
-| `scripts/zed.ts` | Maps `palette.json`'s named `colors`/`syntax` tokens onto Zed's own dotted UI/scope keys. Used only by `build.ts`. |
-| `scripts/vscode.ts` | Maps `palette.json`'s named `colors`/`syntax` tokens onto the VS Code color-theme JSON schema. Used only by `build.ts`. |
-| `zed/` | Zed extension: `extension.toml` (hand-written) + generated `themes/madoe.json` + generated `LICENSE`/`NOTICE`. |
-| `ghostty/` | Generated Ghostty theme fragments, `Madoe Night` and `Madoe Day`. |
-| `vscode/` | VS Code extension. `package.json`/`.vscodeignore` are hand-written; `themes/*-color-theme.json` plus copies of `LICENSE`/`NOTICE`/`README.md`/`CHANGELOG.md` are generated. |
-| `LICENSE`, `NOTICE` | Project docs; `build.ts` copies both, verbatim, into `vscode/` and `zed/` so they ship inside each packaged extension. |
-| `CHANGELOG.md`, this `README.md` | Project docs; `build.ts` copies both into `vscode/`. |
+| Path                             | Role                                                                                                                                                                                                            |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `palette.json`                   | The only hand-edited color source. Flat, neutral, named color tokens (`colors`, `syntax`, `players`), not any one editor's schema — one `variants` entry each for `Madoe Night` (dark) and `Madoe Day` (light). |
+| `build.ts`                       | Reads `palette.json` and deterministically (re)writes every generated file below.                                                                                                                               |
+| `scripts/zed.ts`                 | Maps `palette.json`'s named `colors`/`syntax` tokens onto Zed's own dotted UI/scope keys. Used only by `build.ts`.                                                                                              |
+| `scripts/vscode.ts`              | Maps `palette.json`'s named `colors`/`syntax` tokens onto the VS Code color-theme JSON schema. Used only by `build.ts`.                                                                                         |
+| `zed/`                           | Zed extension: `extension.toml` (hand-written) + generated `themes/madoe.json` + generated `LICENSE`/`NOTICE`.                                                                                                  |
+| `ghostty/`                       | Generated Ghostty theme fragments, `Madoe Night` and `Madoe Day`.                                                                                                                                               |
+| `vscode/`                        | VS Code extension. `package.json`/`.vscodeignore` are hand-written; `themes/*-color-theme.json` plus copies of `LICENSE`/`NOTICE`/`README.md`/`CHANGELOG.md` are generated.                                     |
+| `LICENSE`, `NOTICE`              | Project docs; `build.ts` copies both, verbatim, into `vscode/` and `zed/` so they ship inside each packaged extension.                                                                                          |
+| `CHANGELOG.md`, this `README.md` | Project docs; `build.ts` copies both into `vscode/`.                                                                                                                                                            |
 
 ### Generated files are committed on purpose
 

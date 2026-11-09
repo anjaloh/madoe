@@ -7,7 +7,7 @@ export interface Highlight {
 
 export interface Theme {
   name: string;
-  appearance: 'dark' | 'light';
+  appearance: "dark" | "light";
   colors: Record<string, string>;
   syntax: Record<string, Highlight>;
   players: Array<{ cursor: string; background: string; selection: string }>;

@@ -1,15 +1,21 @@
 {
   "name": "madoe",
   "displayName": "Madoe",
-  "description": "Madoe (MAD-oh): restrained Night and Day color themes.",
   "version": "0.1.0",
-  "publisher": "anjaloh",
+  "description": "Madoe (MAD-oh): restrained Night and Day color themes.",
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "dark",
+    "day",
+    "light",
+    "madoe",
+    "night",
+    "theme"
+  ],
   "license": "Apache-2.0",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "categories": ["Themes"],
-  "keywords": ["madoe", "theme", "dark", "light", "night", "day"],
+  "publisher": "anjaloh",
   "contributes": {
     "themes": [
       {
@@ -23,5 +29,8 @@
         "path": "./themes/madoe-day-color-theme.json"
       }
     ]
+  },
+  "engines": {
+    "vscode": "^1.85.0"
   }
 }

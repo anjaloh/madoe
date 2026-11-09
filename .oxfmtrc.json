@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    "ghostty/",
+    "vscode/themes/",
+    "vscode/CHANGELOG.md",
+    "vscode/README.md",
+    "zed/themes/"
+  ]
+}

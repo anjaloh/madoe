@@ -1,13 +1,13 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
-import { ghosttyTheme } from './ghostty.ts';
-import { variant } from './test-palette.ts';
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { ghosttyTheme } from "./ghostty.ts";
+import { variant } from "./test-palette.ts";
 
-const header = '# A header line.';
+const header = "# A header line.";
 
-test('ghosttyTheme writes the ANSI table, the named keys, and a solid selection', () => {
+test("ghosttyTheme writes the ANSI table, the named keys, and a solid selection", () => {
   assert.equal(
-    ghosttyTheme(variant('Madoe Night'), header),
+    ghosttyTheme(variant("Madoe Night"), header),
     `${header}
 # Generated from palette.json by node build.ts.
 
@@ -37,8 +37,8 @@ selection-foreground = #e1e1e1
   );
 });
 
-test('ghosttyTheme fails when an ANSI color token is missing from the palette', () => {
-  const theme = variant('Madoe Day');
+test("ghosttyTheme fails when an ANSI color token is missing from the palette", () => {
+  const theme = variant("Madoe Day");
   delete theme.colors.terminalAnsiBrightCyan;
   assert.throws(() => ghosttyTheme(theme, header), {
     message: 'Unknown color token "terminalAnsiBrightCyan" in Madoe Day',
