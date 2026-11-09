@@ -14,7 +14,7 @@ only.
   (dark) and `Madoe Day` (light).
 - `build.ts`, `scripts/zed.ts`, `scripts/vscode.ts`: generate the Zed
   theme, Ghostty configs, and VS Code color-theme JSON from
-  `palette.json`, run directly via Node 24's native TypeScript
+  `palette.json`, run directly via Node 26's native TypeScript
   type-stripping (no transpile step).
 - Three editor/terminal ports built from the one palette:
   - Zed theme extension (`zed/`)
