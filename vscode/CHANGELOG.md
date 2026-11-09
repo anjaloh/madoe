@@ -22,3 +22,8 @@ only.
   - VS Code color theme extension, packaged as a local `.vsix` (`vscode/`)
 - `LICENSE` (Apache-2.0) and `NOTICE` documenting the Grok Build and
   Tokyo Night provenance of the adapted colors.
+- Unit tests for the Zed, VS Code, and Ghostty mappings (`npm test`).
+- Oxlint with type-aware rules (`npm run lint`) and Oxfmt
+  (`npm run fmt`, `npm run fmt:check`).
+- The build stops when a mapping refers to a token that is not in
+  `palette.json`, or when the manifest versions are different.

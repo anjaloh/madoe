@@ -19,6 +19,10 @@ trademark, sponsorship, or endorsement of any credited project is implied.
 | `build.ts`                       | Reads `palette.json` and deterministically (re)writes every generated file below.                                                                                                                               |
 | `scripts/zed.ts`                 | Maps `palette.json`'s named `colors`/`syntax` tokens onto Zed's own dotted UI/scope keys. Used only by `build.ts`.                                                                                              |
 | `scripts/vscode.ts`              | Maps `palette.json`'s named `colors`/`syntax` tokens onto the VS Code color-theme JSON schema. Used only by `build.ts`.                                                                                         |
+| `scripts/ghostty.ts`             | Writes the Ghostty theme fragment for one variant. Used only by `build.ts`.                                                                                                                                     |
+| `scripts/theme.ts`               | Shared `Theme` type. Resolves color and syntax tokens, and stops the build when a token is not in `palette.json`.                                                                                               |
+| `scripts/version.ts`             | Reads the version of each manifest. The build stops when the versions are different.                                                                                                                            |
+| `scripts/*.test.ts`              | Unit tests for the mappings, run with `node --test`. `scripts/test-palette.ts` gives the tests a copy of each `palette.json` variant.                                                                           |
 | `zed/`                           | Zed extension: `extension.toml` (hand-written) + generated `themes/madoe.json` + generated `LICENSE`/`NOTICE`.                                                                                                  |
 | `ghostty/`                       | Generated Ghostty theme fragments, `Madoe Night` and `Madoe Day`.                                                                                                                                               |
 | `vscode/`                        | VS Code extension. `package.json`/`.vscodeignore` are hand-written; `themes/*-color-theme.json` plus copies of `LICENSE`/`NOTICE`/`README.md`/`CHANGELOG.md` are generated.                                     |
@@ -39,16 +43,36 @@ detectable in a read-only way.
 
 ## Requirements
 
-- **Node.js >= 24** — `build.ts`, `scripts/zed.ts`, and `scripts/vscode.ts`
+- **Node.js >= 24** — `build.ts` and the files in `scripts/`
   are plain TypeScript run directly via Node 24's native type-stripping.
   There is no transpile step and no `npm install` needed just to build,
   check, or copy files around.
 - **Bun** (optional) — only needed for `npm run package:vscode`, which
   shells out to `bunx @vscode/vsce` to produce the `.vsix`.
-- For development only (editing `build.ts`/`scripts/zed.ts`/
-  `scripts/vscode.ts` with type checking): `npm install` followed by
-  `npm run typecheck`, which pulls in `typescript` and `@types/node` as
-  dev dependencies. Neither is required to build or package.
+- For development only: run `npm install` to get the dev dependencies
+  (`typescript`, `@types/node`, `oxlint`, `oxlint-tsgolint`, and `oxfmt`).
+  You do not need them to build or package.
+
+## Development
+
+Before you commit, run these commands. Each command must pass:
+
+```sh
+npm test             # unit tests (node --test)
+npm run typecheck    # tsc --noEmit
+npm run lint         # Oxlint, with type-aware rules
+npm run fmt:check    # Oxfmt, read-only (npm run fmt writes the changes)
+npm run check        # the generated files agree with palette.json
+```
+
+Oxfmt does not format the generated files. Their format comes from `build.ts`.
+
+The build stops with an error in these conditions:
+
+- A mapping in `scripts/` refers to a color or syntax token that is not in `palette.json`.
+- `package.json`, `vscode/package.json`, and `zed/extension.toml` have different versions.
+
+To release a new version, change the version in all three manifests.
 
 ## Build
 
@@ -71,7 +95,8 @@ npm run package:vscode
 
 This rebuilds first, then runs `bunx @vscode/vsce package
 --allow-missing-repository --no-rewrite-relative-links` from inside
-`vscode/`, producing `dist/madoe-0.1.0.vsix`. These options keep packaging
+`vscode/`, producing `dist/madoe-<version>.vsix` (for example,
+`dist/madoe-0.1.0.vsix`). The version comes from `package.json`. These options keep packaging
 local without inventing a repository URL. Relative documentation links
 are left unchanged; licenses and notices are included in the VSIX.
 Nothing is published to any registry.
