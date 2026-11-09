@@ -25,6 +25,12 @@ export async function manifestVersions(root: string): Promise<Record<string, str
   return {
     "package.json": await json("package.json"),
     "vscode/package.json": await json("vscode/package.json"),
-    "zed/extension.toml": tomlVersion(await readFile(join(root, "zed/extension.toml"), "utf8")),
+    "zed/extension.toml": tomlVersion(
+      await readFile(
+        join(root, "zed/extension.toml"),
+        // Stryker disable next-line StringLiteral: RegExp.exec converts a Buffer to the same text.
+        "utf8",
+      ),
+    ),
   };
 }

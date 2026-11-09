@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "tap",
+  "tap": {
+    "testFiles": ["scripts/**/*.test.ts"]
+  },
+  "mutate": ["scripts/**/*.ts", "!scripts/**/*.test.ts", "!scripts/test-palette.ts"],
+  "ignorePatterns": ["tsconfig.json"],
+  "reporters": ["clear-text", "progress", "html"],
+  "thresholds": { "high": 100, "low": 95, "break": 100 }
+}

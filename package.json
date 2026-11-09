@@ -12,10 +12,13 @@
     "lint": "oxlint",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
+    "mutate": "stryker run",
     "typecheck": "tsc --noEmit",
     "package:vscode": "node build.ts && mkdir -p dist && cd vscode && bunx @vscode/vsce package --allow-missing-repository --no-rewrite-relative-links --out ../dist/madoe-$npm_package_version.vsix"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^10.1.1",
+    "@stryker-mutator/tap-runner": "^10.1.1",
     "@types/node": "^24.0.0",
     "oxfmt": "^0.78.0",
     "oxlint": "^1.93.0",

@@ -23,6 +23,7 @@ trademark, sponsorship, or endorsement of any credited project is implied.
 | `scripts/theme.ts`               | Shared `Theme` type. Resolves color and syntax tokens, and stops the build when a token is not in `palette.json`.                                                                                               |
 | `scripts/version.ts`             | Reads the version of each manifest. The build stops when the versions are different.                                                                                                                            |
 | `scripts/*.test.ts`              | Unit tests for the mappings, run with `node --test`. `scripts/test-palette.ts` gives the tests a copy of each `palette.json` variant.                                                                           |
+| `stryker.config.json`            | Stryker mutation testing for `scripts/`. It does not copy `tsconfig.json`, because Stryker cannot read it with TypeScript 7.                                                                                    |
 | `zed/`                           | Zed extension: `extension.toml` (hand-written) + generated `themes/madoe.json` + generated `LICENSE`/`NOTICE`.                                                                                                  |
 | `ghostty/`                       | Generated Ghostty theme fragments, `Madoe Night` and `Madoe Day`.                                                                                                                                               |
 | `vscode/`                        | VS Code extension. `package.json`/`.vscodeignore` are hand-written; `themes/*-color-theme.json` plus copies of `LICENSE`/`NOTICE`/`README.md`/`CHANGELOG.md` are generated.                                     |
@@ -50,7 +51,7 @@ detectable in a read-only way.
 - **Bun** (optional) — only needed for `npm run package:vscode`, which
   shells out to `bunx @vscode/vsce` to produce the `.vsix`.
 - For development only: run `npm install` to get the dev dependencies
-  (`typescript`, `@types/node`, `oxlint`, `oxlint-tsgolint`, and `oxfmt`).
+  (`typescript`, `@types/node`, `oxlint`, `oxlint-tsgolint`, `oxfmt`, and Stryker).
   You do not need them to build or package.
 
 ## Development
@@ -63,9 +64,14 @@ npm run typecheck    # tsc --noEmit
 npm run lint         # Oxlint, with type-aware rules
 npm run fmt:check    # Oxfmt, read-only (npm run fmt writes the changes)
 npm run check        # the generated files agree with palette.json
+npm run mutate       # Stryker mutation testing (about 10 seconds)
 ```
 
 Oxfmt does not format the generated files. Their format comes from `build.ts`.
+
+`npm run mutate` changes the code in `scripts/` and runs the tests for each change. Each change that the tests do not find is a missing test. The command fails when the mutation score is less than 100%. If a mutant cannot change the behavior, disable it with a `// Stryker disable next-line <mutator>: <reason>` comment. The HTML report is in `reports/mutation/mutation.html`.
+
+`scripts/golden.test.ts` compares the output of each mapping with the committed theme files. If you change a mapping on purpose, run `npm run build` before `npm test`.
 
 The build stops with an error in these conditions:
 

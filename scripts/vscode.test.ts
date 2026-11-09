@@ -27,6 +27,18 @@ test("vscodeTheme writes TextMate rules and semantic tokens with font styles", (
   });
 });
 
+test("vscodeTheme joins all font styles in the TextMate font style", () => {
+  const palette = variant("Madoe Night");
+  palette.syntax.comment = {
+    foreground: "syntaxComment",
+    italic: true,
+    bold: true,
+    underline: true,
+  };
+  const comment = vscodeTheme(palette).tokenColors.find((rule) => rule.name === "comment");
+  assert.equal(comment?.settings.fontStyle, "italic bold underline");
+});
+
 test("vscodeTheme fails when a mapped color token is missing from the palette", () => {
   const theme = variant("Madoe Night");
   delete theme.colors.terminalAnsiRed;
