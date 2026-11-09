@@ -9,8 +9,9 @@
   "scripts": {
     "build": "node build.ts",
     "check": "node build.ts --check",
+    "test": "node --test",
     "typecheck": "tsc --noEmit",
-    "package:vscode": "node build.ts && mkdir -p dist && cd vscode && bunx @vscode/vsce package --allow-missing-repository --no-rewrite-relative-links --out ../dist/madoe-0.1.0.vsix"
+    "package:vscode": "node build.ts && mkdir -p dist && cd vscode && bunx @vscode/vsce package --allow-missing-repository --no-rewrite-relative-links --out ../dist/madoe-$npm_package_version.vsix"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

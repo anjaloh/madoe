@@ -1,4 +1,4 @@
-import type { Theme } from './vscode.ts';
+import { color, highlight, type Theme } from './theme.ts';
 
 // Zed-specific names stay in this adapter, not in the shared palette.
 const colors: Record<string, string> = {
@@ -154,19 +154,19 @@ const syntax: Record<string, string> = {
 };
 
 export function zedTheme(theme: Theme) {
-  const c = theme.colors;
+  const c = (token: string): string => color(theme, token);
   return {
     name: theme.name,
     appearance: theme.appearance,
     style: {
-      ...Object.fromEntries(Object.entries(colors).map(([field, token]) => [field, c[token]])),
+      ...Object.fromEntries(Object.entries(colors).map(([field, token]) => [field, c(token)])),
       players: theme.players.map(player => ({
-        cursor: c[player.cursor], background: c[player.background], selection: c[player.selection],
+        cursor: c(player.cursor), background: c(player.background), selection: c(player.selection),
       })),
       syntax: Object.fromEntries(Object.entries(syntax).map(([field, token]) => {
-        const style = theme.syntax[token];
+        const style = highlight(theme, token);
         return [field, {
-          color: c[style.foreground],
+          color: style.foreground,
           ...(style.italic ? { font_style: 'italic' } : {}),
           ...(style.bold ? { font_weight: 700 } : {}),
         }];

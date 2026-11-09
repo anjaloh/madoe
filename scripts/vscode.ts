@@ -1,24 +1,4 @@
-export interface Highlight {
-  foreground: string;
-  italic?: boolean;
-  bold?: boolean;
-  underline?: boolean;
-}
-
-export interface Theme {
-  name: string;
-  appearance: 'dark' | 'light';
-  colors: Record<string, string>;
-  syntax: Record<string, Highlight>;
-  players: Array<{ cursor: string; background: string; selection: string }>;
-}
-
-interface SemanticStyle {
-  foreground: string;
-  italic: boolean;
-  bold: boolean;
-  underline: boolean;
-}
+import { color as resolve, highlight as resolveHighlight, type Style, type Theme } from './theme.ts';
 
 interface VSCodeTheme {
   $schema: string;
@@ -32,7 +12,7 @@ interface VSCodeTheme {
     scope: string[];
     settings: { foreground: string; fontStyle: string };
   }>;
-  semanticTokenColors: Record<string, SemanticStyle>;
+  semanticTokenColors: Record<string, Style>;
 }
 
 // Map UI roles explicitly. Equal colors do not make distinct roles interchangeable.
@@ -571,21 +551,13 @@ const semanticSources: Record<string, string> = {
 
 /** Export one neutral palette variant as a VS Code color theme. */
 export function vscodeTheme(theme: Theme): VSCodeTheme {
-  const color = (reference: string): string => theme.colors[reference];
-  const highlight = (token: string): SemanticStyle => {
-    const source = theme.syntax[token];
-    return {
-      foreground: color(source.foreground),
-      italic: source.italic ?? false,
-      bold: source.bold ?? false,
-      underline: source.underline ?? false,
-    };
-  };
+  const color = (reference: string): string => resolve(theme, reference);
+  const highlight = (token: string): Style => resolveHighlight(theme, token);
   const colors: Record<string, string> = Object.fromEntries(
     Object.entries(uiColorSources).map(([key, reference]) => [key, color(reference)]),
   );
   colors["selection.background"] = color(theme.players[0].selection);
-  colors["textPreformat.foreground"] = color(theme.syntax.textLiteral.foreground);
+  colors["textPreformat.foreground"] = highlight("textLiteral").foreground;
   colors["terminalCursor.foreground"] = color(theme.players[0].cursor);
   colors["terminal.selectionBackground"] = color(theme.players[0].selection);
   colors["editorCursor.foreground"] = color(theme.players[0].cursor);
